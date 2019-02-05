@@ -5,6 +5,9 @@
 ;; CS 135 - Discrete Structures
 ;; 5 February 2019
 
+;; I pledge my honor that I have abided by the Stevens Honor System.
+;; -- Andrew Chinique
+
 ;; Some basic logic operators, defined in terms of Scheme's built-in 
 ;; and,or,not 
 
@@ -21,7 +24,7 @@
 ;; Type signature: (nand boolean boolean) -> boolean
 
 (define (nand p q)
-  (not(and p q)))
+  (not (and p q)))
 
 
 ;; Define if->then, it has the truth table
@@ -74,8 +77,8 @@
 
 ;; Type signature: (3majority boolean boolean boolean) -> boolean
 (define (3majority p q r)
-  (if p (if q #t (if r #t #f)) (if q (if r #t #f) #f)))
-  ;;((not p) or (((not q) or #t) or (((not r) or #t) or #f))) or ((not q) or ((not r) or #
+  ;;(if p (if q #t (if r #t #f)) (if q (if r #t #f) #f)))
+  (or (or (and p q) (and p r)) (and q r)))
 
 
 ;; Define (isosceles p q r)
@@ -92,7 +95,8 @@
 ;; ((#f #f #f) #f)
 
 (define (isosceles p q r)
-  (if p (if q (if r #f #t) (if r #t #f)) (if q (if r #t #f) #f)))
+  ;;(if p (if q (if r #f #t) (if r #t #f)) (if q (if r #t #f) #f)))
+  (and (or (or (and p q) (and p r)) (and q r)) (not (and (and p q) r))))
 
 
 ;; Define (commutative? operator)
@@ -105,7 +109,8 @@
 ;; Type signature: (commutative? operator) -> boolean
 ;; Where operator's type signature is (operator boolean boolean) -> boolean
 (define (commutative? operator)
-  (equal? (operator #t #f) (operator #f #t)))
+  ;; (equal? (operator #t #f) (operator #f #t)))
+  (not (or (and (not (operator #t #f)) (operator #f #t)) (and (not (operator #f #t)) (operator #t #f)))))
 
 ;; January 2018
 ;; Samuel Kraus and Edward Minnix
